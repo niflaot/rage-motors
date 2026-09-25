@@ -11,12 +11,7 @@ export const metadata: Metadata = {
 
 /** Renders the staff route with a server-validated Better Auth session. */
 const PanelPage = async (): Promise<ReactNode> => {
-  const authConfigured = Boolean(
-    process.env.BETTER_AUTH_SECRET &&
-    process.env.DISCORD_CLIENT_ID &&
-    process.env.DISCORD_CLIENT_SECRET &&
-    process.env.DATABASE_URL,
-  )
+  const authConfigured = Boolean(process.env.RAGE_API_URL)
   const result = authConfigured
     ? await getStaffSession()
     : { accessDenied: false, session: null }

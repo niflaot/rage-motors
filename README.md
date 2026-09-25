@@ -70,6 +70,13 @@ npm run prisma:migrate -- --name nombre_del_cambio
 | `npm run test`      | Run the Vitest suite once                  |
 | `npm run verify`    | Run every required quality check and build |
 
+## Portainer
+
+El stack reproducible para desplegar un commit específico del frontend, el API
+y PostgreSQL está documentado en [`deploy/README.md`](deploy/README.md). Incluye
+un volumen persistente fijo para `mt-rage-postgres` y validación del SHA antes de
+compilar cada servicio.
+
 ## Project structure
 
 ```text
