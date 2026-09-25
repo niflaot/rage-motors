@@ -1,110 +1,14 @@
 version: '3.8'
 
 services:
-  mt-rage-source:
-    image: ${RAGE_NODE_IMAGE:?RAGE_NODE_IMAGE is required}
-    container_name: mt-rage-source
-    restart: 'no'
-    working_dir: /workspace
-    entrypoint: ['/bin/bash', '-c']
-    command:
-      - |
-        set -Eeuo pipefail
-        : "$${RAGE_REPOSITORY_URL:?RAGE_REPOSITORY_URL is required}"
-        : "$${RAGE_GIT_REF:?RAGE_GIT_REF is required}"
-        readonly source_directory=/workspace/source
-
-        if [[ ! -d "$${source_directory}/.git" ]]; then
-          if [[ -e "$${source_directory}" ]] && [[ -n "$$(find "$${source_directory}" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
-            echo "$${source_directory} exists but is not an empty Git checkout." >&2
-            exit 1
-          fi
-          git clone --no-checkout "$${RAGE_REPOSITORY_URL}" "$${source_directory}"
-        fi
-
-        current_origin="$$(git -C "$${source_directory}" remote get-url origin)"
-        if [[ "$${current_origin}" != "$${RAGE_REPOSITORY_URL}" ]]; then
-          git -C "$${source_directory}" remote set-url origin "$${RAGE_REPOSITORY_URL}"
-          echo "Updated frontend origin from $${current_origin} to $${RAGE_REPOSITORY_URL}."
-        fi
-
-        git -C "$${source_directory}" fetch --prune --tags origin '+refs/heads/*:refs/remotes/origin/*'
-        resolved_commit=""
-        for candidate in "refs/remotes/origin/$${RAGE_GIT_REF}" "refs/tags/$${RAGE_GIT_REF}" "$${RAGE_GIT_REF}"; do
-          if resolved_commit="$$(git -C "$${source_directory}" rev-parse --verify "$${candidate}^{commit}" 2>/dev/null)"; then break; fi
-        done
-        if [[ -z "$${resolved_commit}" ]]; then
-          echo "RAGE_GIT_REF '$${RAGE_GIT_REF}' does not resolve to a branch, tag, or commit." >&2
-          exit 1
-        fi
-
-        git -C "$${source_directory}" checkout --detach --force "$${resolved_commit}"
-        git -C "$${source_directory}" clean -ffdx
-        printf '%s' "$${resolved_commit}" > /workspace/resolved-commit
-        echo "Prepared Rage Motors frontend at $${resolved_commit}."
-    volumes:
-      - mt-rage-workspace:/workspace
-    environment:
-      RAGE_REPOSITORY_URL: '${RAGE_REPOSITORY_URL:-https://github.com/niflaot/rage-motors.git}'
-      RAGE_GIT_REF: '${RAGE_GIT_REF:?RAGE_GIT_REF is required}'
-      GIT_TERMINAL_PROMPT: '0'
-
-  mt-rage-api-source:
-    image: ${RAGE_NODE_IMAGE:?RAGE_NODE_IMAGE is required}
-    container_name: mt-rage-api-source
-    restart: 'no'
-    working_dir: /workspace
-    entrypoint: ['/bin/bash', '-c']
-    command:
-      - |
-        set -Eeuo pipefail
-        : "$${RAGE_API_REPOSITORY_URL:?RAGE_API_REPOSITORY_URL is required}"
-        : "$${RAGE_API_GIT_REF:?RAGE_API_GIT_REF is required}"
-        readonly source_directory=/workspace/source
-
-        if [[ ! -d "$${source_directory}/.git" ]]; then
-          if [[ -e "$${source_directory}" ]] && [[ -n "$$(find "$${source_directory}" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
-            echo "$${source_directory} exists but is not an empty Git checkout." >&2
-            exit 1
-          fi
-          git clone --no-checkout "$${RAGE_API_REPOSITORY_URL}" "$${source_directory}"
-        fi
-
-        current_origin="$$(git -C "$${source_directory}" remote get-url origin)"
-        if [[ "$${current_origin}" != "$${RAGE_API_REPOSITORY_URL}" ]]; then
-          git -C "$${source_directory}" remote set-url origin "$${RAGE_API_REPOSITORY_URL}"
-          echo "Updated API origin from $${current_origin} to $${RAGE_API_REPOSITORY_URL}."
-        fi
-
-        git -C "$${source_directory}" fetch --prune --tags origin '+refs/heads/*:refs/remotes/origin/*'
-        resolved_commit=""
-        for candidate in "refs/remotes/origin/$${RAGE_API_GIT_REF}" "refs/tags/$${RAGE_API_GIT_REF}" "$${RAGE_API_GIT_REF}"; do
-          if resolved_commit="$$(git -C "$${source_directory}" rev-parse --verify "$${candidate}^{commit}" 2>/dev/null)"; then break; fi
-        done
-        if [[ -z "$${resolved_commit}" ]]; then
-          echo "RAGE_API_GIT_REF '$${RAGE_API_GIT_REF}' does not resolve to a branch, tag, or commit." >&2
-          exit 1
-        fi
-
-        git -C "$${source_directory}" checkout --detach --force "$${resolved_commit}"
-        git -C "$${source_directory}" clean -ffdx
-        printf '%s' "$${resolved_commit}" > /workspace/resolved-commit
-        echo "Prepared Rage Motors API at $${resolved_commit}."
-    volumes:
-      - mt-rage-api-workspace:/workspace
-    environment:
-      RAGE_API_REPOSITORY_URL: '${RAGE_API_REPOSITORY_URL:?RAGE_API_REPOSITORY_URL is required}'
-      RAGE_API_GIT_REF: '${RAGE_API_GIT_REF:?RAGE_API_GIT_REF is required}'
-      GIT_TERMINAL_PROMPT: '0'
-
   mt-rage-postgres:
     image: ${RAGE_POSTGRES_IMAGE:-postgres:17.6-alpine}
     container_name: mt-rage-postgres
     restart: unless-stopped
     shm_size: 128mb
     environment:
-      POSTGRES_DB: '${RAGE_POSTGRES_DATABASE:-rage_motors}'
-      POSTGRES_USER: '${RAGE_POSTGRES_USER:-rage_motors}'
+      POSTGRES_DB: '${RAGE_POSTGRES_DATABASE:-ragem}'
+      POSTGRES_USER: '${RAGE_POSTGRES_USER:-ragem}'
       POSTGRES_PASSWORD: '${RAGE_POSTGRES_PASSWORD:?RAGE_POSTGRES_PASSWORD is required}'
       POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256'
     healthcheck:
@@ -118,126 +22,68 @@ services:
       - mt-rage-postgres-data:/var/lib/postgresql/data
     networks: [fl-network]
 
-  mt-rage-migrations:
-    image: ${RAGE_NODE_IMAGE:?RAGE_NODE_IMAGE is required}
-    container_name: mt-rage-migrations
-    restart: 'no'
-    depends_on:
-      mt-rage-api-source:
-        condition: service_completed_successfully
-      mt-rage-postgres:
-        condition: service_healthy
-    working_dir: /workspace/source
-    entrypoint: ['/bin/bash', '-c']
-    command:
-      - |
-        set -Eeuo pipefail
-        readonly resolved_commit="$$(cat /workspace/resolved-commit)"
-        readonly actual_commit="$$(git rev-parse HEAD)"
-        if [[ "$${actual_commit}" != "$${resolved_commit}" ]]; then
-          echo "API source commit $${actual_commit} does not match $${resolved_commit}." >&2
-          exit 1
-        fi
-
-        npm ci
-        npm run prisma:generate
-        npx prisma migrate deploy
-        echo "Applied Rage Motors migrations from $${resolved_commit}."
-    volumes:
-      - mt-rage-api-workspace:/workspace
-      - mt-rage-api-npm-cache:/root/.npm
-    environment:
-      DATABASE_URL: 'postgresql://${RAGE_POSTGRES_USER:-rage_motors}:${RAGE_POSTGRES_PASSWORD:?RAGE_POSTGRES_PASSWORD is required}@mt-rage-postgres:5432/${RAGE_POSTGRES_DATABASE:-rage_motors}'
-      RAGE_API_GIT_REF: '${RAGE_API_GIT_REF:?RAGE_API_GIT_REF is required}'
-    networks: [fl-network]
-
-  mt-rage-api:
-    image: ${RAGE_NODE_IMAGE:?RAGE_NODE_IMAGE is required}
-    container_name: mt-rage-api
-    restart: unless-stopped
-    init: true
-    depends_on:
-      mt-rage-migrations:
-        condition: service_completed_successfully
-    working_dir: /workspace/source
-    entrypoint: ['/bin/bash', '-c']
-    command:
-      - |
-        set -Eeuo pipefail
-        readonly resolved_commit="$$(cat /workspace/resolved-commit)"
-        readonly actual_commit="$$(git rev-parse HEAD)"
-        if [[ "$${actual_commit}" != "$${resolved_commit}" ]]; then
-          echo "API source commit $${actual_commit} does not match $${resolved_commit}." >&2
-          exit 1
-        fi
-
-        npm run build
-        echo "Starting Rage Motors API from $${resolved_commit}."
-        exec npm run start
-    volumes:
-      - mt-rage-api-workspace:/workspace
-      - mt-rage-api-npm-cache:/root/.npm
-    environment:
-      NODE_ENV: production
-      API_PORT: '3001'
-      DATABASE_URL: 'postgresql://${RAGE_POSTGRES_USER:-rage_motors}:${RAGE_POSTGRES_PASSWORD:?RAGE_POSTGRES_PASSWORD is required}@mt-rage-postgres:5432/${RAGE_POSTGRES_DATABASE:-rage_motors}'
-      BETTER_AUTH_SECRET: '${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET is required}'
-      BETTER_AUTH_URL: '${RAGE_PUBLIC_URL:?RAGE_PUBLIC_URL is required}'
-      DISCORD_CLIENT_ID: '${DISCORD_CLIENT_ID:?DISCORD_CLIENT_ID is required}'
-      DISCORD_CLIENT_SECRET: '${DISCORD_CLIENT_SECRET:?DISCORD_CLIENT_SECRET is required}'
-      AUTHORIZED_DISCORD_IDS: '${AUTHORIZED_DISCORD_IDS:?AUTHORIZED_DISCORD_IDS is required}'
-      FRONTEND_ORIGIN: '${RAGE_PUBLIC_URL:?RAGE_PUBLIC_URL is required}'
-      RAGE_API_GIT_REF: '${RAGE_API_GIT_REF:?RAGE_API_GIT_REF is required}'
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'node',
-          '-e',
-          "fetch('http://127.0.0.1:3001/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
-        ]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-    expose: ['3001']
-    networks: [fl-network]
-
   mt-rage:
-    image: ${RAGE_NODE_IMAGE:?RAGE_NODE_IMAGE is required}
+    image: ${RAGE_NODE_IMAGE:-node:24-bookworm}
     container_name: mt-rage
     restart: unless-stopped
     init: true
     depends_on:
-      mt-rage-source:
-        condition: service_completed_successfully
-      mt-rage-api:
+      mt-rage-postgres:
         condition: service_healthy
-    working_dir: /workspace/source
+    working_dir: /workspace
     entrypoint: ['/bin/bash', '-c']
     command:
       - |
         set -Eeuo pipefail
-        readonly resolved_commit="$$(cat /workspace/resolved-commit)"
-        readonly actual_commit="$$(git rev-parse HEAD)"
-        if [[ "$${actual_commit}" != "$${resolved_commit}" ]]; then
-          echo "Frontend source commit $${actual_commit} does not match $${resolved_commit}." >&2
+        : "$${RAGE_REPOSITORY_URL:?RAGE_REPOSITORY_URL is required}"
+        : "$${RAGE_GIT_REF:?RAGE_GIT_REF is required}"
+        readonly source_directory=/workspace/source
+
+        if [[ ! -d "$${source_directory}/.git" ]]; then
+          if [[ -e "$${source_directory}" ]] && [[ -n "$$(find "$${source_directory}" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
+            echo "$${source_directory} existe, pero no es un checkout Git válido." >&2
+            exit 1
+          fi
+          git clone --no-checkout "$${RAGE_REPOSITORY_URL}" "$${source_directory}"
+        fi
+
+        current_origin="$$(git -C "$${source_directory}" remote get-url origin)"
+        if [[ "$${current_origin}" != "$${RAGE_REPOSITORY_URL}" ]]; then
+          git -C "$${source_directory}" remote set-url origin "$${RAGE_REPOSITORY_URL}"
+        fi
+
+        git -C "$${source_directory}" fetch --force --prune --tags origin '+refs/heads/*:refs/remotes/origin/*'
+
+        resolved_commit=""
+        for candidate in "refs/remotes/origin/$${RAGE_GIT_REF}" "refs/tags/$${RAGE_GIT_REF}" "$${RAGE_GIT_REF}"; do
+          if resolved_commit="$$(git -C "$${source_directory}" rev-parse --verify "$${candidate}^{commit}" 2>/dev/null)"; then break; fi
+        done
+
+        if [[ -z "$${resolved_commit}" ]]; then
+          echo "RAGE_GIT_REF '$${RAGE_GIT_REF}' no corresponde a una rama, etiqueta o commit." >&2
           exit 1
         fi
 
-        npm ci
+        git -C "$${source_directory}" checkout --detach --force "$${resolved_commit}"
+        git -C "$${source_directory}" clean -ffdx
+        cd "$${source_directory}"
+        npm ci --include=dev
         npm run build
-        echo "Starting Rage Motors frontend from $${resolved_commit}."
+        echo "Iniciando Rage Motors desde el commit $${resolved_commit}."
         exec npm run start -- --hostname 0.0.0.0 --port 3000
-    volumes:
-      - mt-rage-workspace:/workspace
-      - mt-rage-npm-cache:/root/.npm
     environment:
       NODE_ENV: production
       PORT: '3000'
       HOSTNAME: '0.0.0.0'
-      RAGE_API_URL: 'http://mt-rage-api:3001'
+      DATABASE_URL: 'postgresql://${RAGE_POSTGRES_USER:-ragem}:${RAGE_POSTGRES_PASSWORD:?RAGE_POSTGRES_PASSWORD is required}@mt-rage-postgres:5432/${RAGE_POSTGRES_DATABASE:-ragem}'
+      BETTER_AUTH_SECRET: '${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET is required}'
+      BETTER_AUTH_URL: '${BETTER_AUTH_URL:?BETTER_AUTH_URL is required}'
+      DISCORD_CLIENT_ID: '${DISCORD_CLIENT_ID:?DISCORD_CLIENT_ID is required}'
+      DISCORD_CLIENT_SECRET: '${DISCORD_CLIENT_SECRET:?DISCORD_CLIENT_SECRET is required}'
+      AUTHORIZED_DISCORD_IDS: '${AUTHORIZED_DISCORD_IDS:?AUTHORIZED_DISCORD_IDS is required}'
+      RAGE_REPOSITORY_URL: '${RAGE_REPOSITORY_URL:-https://github.com/niflaot/rage-motors.git}'
       RAGE_GIT_REF: '${RAGE_GIT_REF:?RAGE_GIT_REF is required}'
+      GIT_TERMINAL_PROMPT: '0'
     healthcheck:
       test:
         [
@@ -249,19 +95,11 @@ services:
       interval: 15s
       timeout: 5s
       retries: 10
-      start_period: 60s
+      start_period: 90s
     expose: ['3000']
     networks: [fl-network]
 
 volumes:
-  mt-rage-workspace:
-    name: mt-rage-workspace
-  mt-rage-api-workspace:
-    name: mt-rage-api-workspace
-  mt-rage-npm-cache:
-    name: mt-rage-npm-cache
-  mt-rage-api-npm-cache:
-    name: mt-rage-api-npm-cache
   mt-rage-postgres-data:
     name: mt-rage-postgres-data
 

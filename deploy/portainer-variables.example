@@ -1,25 +1,20 @@
-# Imágenes de runtime. Usa etiquetas concretas si quieres despliegues reproducibles.
+# Runtime de la aplicación.
 RAGE_NODE_IMAGE=node:24-bookworm
-RAGE_POSTGRES_IMAGE=postgres:17.6-alpine
 
-# Frontend: acepta una rama, etiqueta o SHA completo.
+# Repositorio: acepta una rama, etiqueta o SHA completo.
 RAGE_REPOSITORY_URL=https://github.com/niflaot/rage-motors.git
 RAGE_GIT_REF=6e6f2de643d5a010c094a7e6fd6072556947ee8b
 
-# API: publícala en un repositorio Git separado y selecciona su commit.
-RAGE_API_REPOSITORY_URL=https://github.com/niflaot/rage-motors-api.git
-RAGE_API_GIT_REF=REEMPLAZAR_CON_SHA_COMPLETO
-
-# URL pública del frontend, sin barra final.
-RAGE_PUBLIC_URL=https://rage.example.com
-
-# PostgreSQL. La contraseña debe ser segura y apta para una URL.
-RAGE_POSTGRES_DATABASE=rage_motors
-RAGE_POSTGRES_USER=rage_motors
+# PostgreSQL. Usa una contraseña segura que no contenga caracteres que deban
+# codificarse en una URL.
+RAGE_POSTGRES_IMAGE=postgres:17.6-alpine
+RAGE_POSTGRES_DATABASE=ragem
+RAGE_POSTGRES_USER=ragem
 RAGE_POSTGRES_PASSWORD=REEMPLAZAR_CON_CLAVE_SEGURA
 
-# Better Auth y Discord OAuth.
-BETTER_AUTH_SECRET=REEMPLAZAR_CON_AL_MENOS_32_CARACTERES_ALEATORIOS
-DISCORD_CLIENT_ID=REEMPLAZAR
+# Better Auth y Discord. La URL debe ser pública, HTTPS y sin barra final.
+BETTER_AUTH_SECRET=REEMPLAZAR_CON_SECRETO_DE_AL_MENOS_32_CARACTERES
+BETTER_AUTH_URL=https://ragemotors.niflaot.dev
+DISCORD_CLIENT_ID=1527502484539707423
 DISCORD_CLIENT_SECRET=REEMPLAZAR
-AUTHORIZED_DISCORD_IDS=123456789012345678,987654321098765432
+AUTHORIZED_DISCORD_IDS=REEMPLAZAR_CON_IDS_REALES_SEPARADOS_POR_COMAS

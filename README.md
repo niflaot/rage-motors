@@ -72,10 +72,10 @@ npm run prisma:migrate -- --name nombre_del_cambio
 
 ## Portainer
 
-El stack reproducible para desplegar un commit específico del frontend, el API
-y PostgreSQL está documentado en [`deploy/README.md`](deploy/README.md). Incluye
+El stack reproducible para desplegar un commit específico de este repositorio
+junto con PostgreSQL está documentado en [`deploy/README.md`](deploy/README.md). Incluye
 un volumen persistente fijo para `mt-rage-postgres` y validación del SHA antes de
-compilar cada servicio.
+compilar la aplicación.
 
 ## Project structure
 

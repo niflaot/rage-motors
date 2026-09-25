@@ -1,41 +1,47 @@
 # Despliegue en Portainer
 
-El archivo `portainer-stack.yml` sigue el patrón de checkout por referencia Git
-del stack suministrado. Cada despliegue resuelve la referencia seleccionada a un
-commit, hace checkout separado y comprueba ese SHA antes de compilar o iniciar.
+Este stack contiene únicamente la aplicación `mt-rage` y PostgreSQL. El propio
+contenedor de la aplicación descarga el repositorio, resuelve la referencia Git
+seleccionada a un commit exacto, instala también las dependencias necesarias para
+compilar Tailwind y Next.js, compila el proyecto y lo inicia.
 
-## Servicios
+## Servicios y persistencia
 
-- `mt-rage-source`: prepara el commit del frontend.
-- `mt-rage-api-source`: prepara el commit del API.
-- `mt-rage-migrations`: genera Prisma y aplica las migraciones pendientes.
-- `mt-rage-api`: ejecuta Express, Better Auth y Prisma en el puerto interno 3001.
-- `mt-rage`: ejecuta Next.js en el puerto interno 3000.
-- `mt-rage-postgres`: ejecuta PostgreSQL con almacenamiento persistente.
+- `mt-rage`: ejecuta el commit elegido del repositorio en el puerto interno 3000.
+- `mt-rage-postgres`: ejecuta PostgreSQL sin publicar el puerto 5432 al host.
 
-La base de datos no publica su puerto en el host. El API la alcanza mediante
-`mt-rage-postgres:5432` dentro de `fl-network`. Sus datos sobreviven recreaciones
-del stack en el volumen fijo `mt-rage-postgres-data`. Eliminar el stack no borra
-ese volumen salvo que se elimine manualmente desde Portainer.
+PostgreSQL guarda sus datos en el volumen fijo `mt-rage-postgres-data`. Los datos
+sobreviven a la recreación o actualización del stack. Solo se pierden si ese
+volumen se elimina manualmente desde Portainer.
 
-## Variables obligatorias
+## Variables
 
-| Variable                  | Contenido                                                   |
-| ------------------------- | ----------------------------------------------------------- |
-| `RAGE_NODE_IMAGE`         | Imagen Node con Bash y Git, por ejemplo `node:24-bookworm`. |
-| `RAGE_GIT_REF`            | Rama, etiqueta o SHA del frontend que se desplegará.        |
-| `RAGE_API_REPOSITORY_URL` | URL Git del repositorio separado del API.                   |
-| `RAGE_API_GIT_REF`        | Rama, etiqueta o SHA del API que se desplegará.             |
-| `RAGE_PUBLIC_URL`         | URL HTTPS pública del sitio, sin barra final.               |
-| `RAGE_POSTGRES_PASSWORD`  | Contraseña segura y apta para una URL PostgreSQL.           |
-| `BETTER_AUTH_SECRET`      | Secreto aleatorio de al menos 32 caracteres.                |
-| `DISCORD_CLIENT_ID`       | Client ID de la aplicación de Discord.                      |
-| `DISCORD_CLIENT_SECRET`   | Client secret de Discord.                                   |
-| `AUTHORIZED_DISCORD_IDS`  | IDs de usuarios autorizados, separados por comas.           |
+La plantilla completa está en `portainer-variables.example`. Debes cambiar como
+mínimo estas variables:
 
-`RAGE_REPOSITORY_URL`, `RAGE_POSTGRES_IMAGE`, `RAGE_POSTGRES_DATABASE` y
-`RAGE_POSTGRES_USER` tienen valores predeterminados. La plantilla completa está
-en `portainer-variables.example`.
+| Variable                 | Contenido                                          |
+| ------------------------ | -------------------------------------------------- |
+| `RAGE_GIT_REF`           | Rama, etiqueta o SHA exacto que quieres desplegar. |
+| `RAGE_POSTGRES_PASSWORD` | Contraseña segura para el usuario de PostgreSQL.   |
+| `BETTER_AUTH_SECRET`     | Secreto aleatorio de al menos 32 caracteres.       |
+| `BETTER_AUTH_URL`        | URL HTTPS pública del sitio, sin barra final.      |
+| `DISCORD_CLIENT_ID`      | Client ID de la aplicación de Discord.             |
+| `DISCORD_CLIENT_SECRET`  | Client secret de la aplicación de Discord.         |
+| `AUTHORIZED_DISCORD_IDS` | IDs autorizados de Discord separados por comas.    |
+
+Estas variables ya tienen valores predeterminados y puedes modificarlas cuando
+lo necesites:
+
+| Variable                 | Valor predeterminado                         |
+| ------------------------ | -------------------------------------------- |
+| `RAGE_NODE_IMAGE`        | `node:24-bookworm`                           |
+| `RAGE_REPOSITORY_URL`    | `https://github.com/niflaot/rage-motors.git` |
+| `RAGE_POSTGRES_IMAGE`    | `postgres:17.6-alpine`                       |
+| `RAGE_POSTGRES_DATABASE` | `ragem`                                      |
+| `RAGE_POSTGRES_USER`     | `ragem`                                      |
+
+La aplicación recibe automáticamente `DATABASE_URL` apuntando a
+`mt-rage-postgres:5432`; no tienes que definirla manualmente.
 
 Genera `BETTER_AUTH_SECRET` con:
 
@@ -43,33 +49,38 @@ Genera `BETTER_AUTH_SECRET` con:
 openssl rand -base64 32
 ```
 
-En Discord registra esta URL de redirección, sustituyendo el dominio:
+Todas estas variables se cargan juntas en **Environment variables** del stack y
+Portainer las inyecta en `mt-rage`. No subas sus valores reales al repositorio.
+En el portal de Discord registra, sustituyendo el dominio, esta redirección:
 
 ```text
-https://rage.example.com/api/auth/callback/discord
+https://ragemotors.niflaot.dev/api/auth/callback/discord
 ```
 
-## Seleccionar un commit
+## Elegir el commit
 
-En las variables del stack establece el SHA exacto:
+Para fijar exactamente una versión, copia el SHA completo en las variables del
+stack:
 
 ```text
 RAGE_GIT_REF=6e6f2de643d5a010c094a7e6fd6072556947ee8b
-RAGE_API_GIT_REF=<sha-del-api>
 ```
 
-Después pulsa **Update the stack** en Portainer. Los contenedores de preparación
-fallan de forma explícita si la rama, etiqueta o SHA no existe. Los logs muestran
-el commit completo que finalmente se compiló.
+Después pulsa **Update the stack** en Portainer. También puedes usar una rama o
+etiqueta. Los logs de `mt-rage` muestran el SHA final que se compiló, y el
+despliegue falla claramente si la referencia no existe.
 
 ## Requisitos de Portainer
 
 1. La red externa `fl-network` debe existir.
-2. El proxy debe dirigir el dominio público a `mt-rage:3000` en esa red.
-3. La API debe publicarse primero en un repositorio Git independiente. En el
-   estado actual solo existe localmente en `../rage-motors-api`; la URL sugerida
-   en el ejemplo todavía no existe en GitHub.
-4. Pega `portainer-stack.yml` como Web editor y carga las variables de
+2. El proxy debe dirigir el dominio público a `mt-rage:3000` dentro de esa red.
+3. Pega `portainer-stack.yml` en el editor del stack y carga las variables de
    `portainer-variables.example` en **Environment variables**.
 
-No se publican los puertos 3001 ni 5432 al host.
+## Alcance actual del repositorio
+
+Este repositorio está definido como frontend y actualmente delega el catálogo,
+las solicitudes y el inicio de sesión a un servicio HTTP externo. Este stack
+crea PostgreSQL y entrega su conexión a la aplicación, pero esas funciones no
+usarán la base de datos directamente hasta que exista el contrato de backend
+correspondiente. No se incluye ni se despliega ningún servicio `rage-api`.
