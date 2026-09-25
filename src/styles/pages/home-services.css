@@ -1,0 +1,220 @@
+.service-showcase {
+  padding-top: clamp(9rem, 12vw, 12rem);
+}
+
+.service-showcase .section-title {
+  margin-bottom: clamp(5rem, 7vw, 7rem);
+}
+
+.service-showcase__grid {
+  display: grid;
+  grid-template-columns: minmax(25rem, 1fr) 1fr;
+  align-items: center;
+  gap: clamp(4rem, 9vw, 9rem);
+}
+
+.service-orbit {
+  --service-rotation: 0deg;
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 36rem);
+  margin-inline: auto;
+}
+
+.service-orbit--position-2 {
+  --service-rotation: 72deg;
+}
+.service-orbit--position-3 {
+  --service-rotation: 144deg;
+}
+.service-orbit--position-4 {
+  --service-rotation: 216deg;
+}
+.service-orbit--position-5 {
+  --service-rotation: 288deg;
+}
+
+.service-orbit__track {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--service-rotation));
+  transition: transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.service-orbit__ring {
+  position: absolute;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+}
+
+.service-orbit__ring--outer {
+  inset: 8%;
+}
+.service-orbit__ring--inner {
+  inset: 27%;
+  border-color: rgb(226 35 26 / 35%);
+}
+
+.service-orbit__indicator {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  width: 2px;
+  height: 21%;
+  background: linear-gradient(var(--color-red-bright), transparent);
+  box-shadow: 0 0 1.5rem rgb(255 56 48 / 65%);
+  translate: -50%;
+}
+
+.service-orbit__indicator::before {
+  position: absolute;
+  top: -0.22rem;
+  left: 50%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: var(--color-red-bright);
+  box-shadow: 0 0 0 0.3rem rgb(255 56 48 / 14%);
+  content: '';
+  translate: -50%;
+}
+
+.service-orbit__center {
+  position: absolute;
+  inset: 31%;
+  display: grid;
+  place-content: center;
+  border: 1px solid rgb(226 35 26 / 45%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(226 35 26 / 18%), transparent 72%);
+  text-align: center;
+  animation: service-center-reveal 420ms ease both;
+}
+
+.service-orbit__center > span {
+  color: var(--color-red-bright);
+  font-size: 2rem;
+}
+.service-orbit__center strong {
+  margin-top: 0.5rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+.service-orbit__center small {
+  color: var(--color-muted);
+}
+
+.service-orbit__button {
+  position: absolute;
+  display: grid;
+  place-content: center;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  transition:
+    scale 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.service-orbit__button:hover,
+.service-orbit__button:focus-visible {
+  z-index: 2;
+  border-color: var(--color-red-bright);
+  scale: 1.1;
+}
+
+.service-orbit__button--active {
+  border-color: var(--color-red-bright);
+  background: var(--color-red);
+}
+.service-orbit__button--1 {
+  top: -2%;
+  left: 50%;
+  translate: -50%;
+}
+.service-orbit__button--2 {
+  top: 25%;
+  right: -3%;
+}
+.service-orbit__button--3 {
+  right: 8%;
+  bottom: 0;
+}
+.service-orbit__button--4 {
+  bottom: 0;
+  left: 8%;
+}
+.service-orbit__button--5 {
+  top: 25%;
+  left: -3%;
+}
+
+.service-detail__overline {
+  color: var(--color-red-bright);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.service-detail h3 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+}
+.service-detail p {
+  color: var(--color-muted);
+  line-height: 1.65;
+}
+.service-detail strong {
+  color: var(--color-red-bright);
+  font-family: var(--font-mono);
+}
+.service-detail__chips {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.25rem 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+.service-detail__chips li {
+  border: 1px solid var(--color-line);
+  padding: 0.5rem 0.7rem;
+  color: #bdbdc3;
+  font-size: 0.78rem;
+}
+
+@keyframes service-center-reveal {
+  from {
+    opacity: 0;
+    scale: 0.88;
+  }
+}
+
+@media (max-width: 760px) {
+  .service-showcase {
+    padding-top: 7rem;
+  }
+
+  .service-showcase .section-title {
+    margin-bottom: 4rem;
+  }
+
+  .service-showcase__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .section-title {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .service-orbit {
+    width: min(100%, 23rem);
+  }
+  .service-orbit__button {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+}

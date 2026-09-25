@@ -1,0 +1,231 @@
+.catalog-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(12rem, 0.8fr) auto;
+  align-items: end;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.catalog-editor__submit {
+  margin-bottom: 1rem;
+}
+
+.icon-picker {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.35rem;
+}
+
+.icon-picker__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3.5rem;
+  border: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 4%);
+  padding: 0.55rem 0.8rem;
+}
+
+.icon-picker__trigger:hover,
+.icon-picker__trigger:focus-visible,
+.icon-picker__trigger[aria-expanded='true'] {
+  border-color: var(--color-red-bright);
+}
+
+.icon-picker__selection {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+}
+
+.icon-picker__selection .part-icon {
+  color: var(--color-red-bright);
+}
+
+.icon-picker__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 72%);
+  padding: 1.5rem;
+  backdrop-filter: blur(5px);
+}
+
+.icon-picker__popover {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(100%, 52rem);
+  max-height: calc(100svh - 3rem);
+  border: 1px solid var(--color-line);
+  background: #0d0d10;
+  padding: 1rem;
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 55%);
+}
+
+.icon-picker__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.icon-picker__search {
+  flex: 1;
+}
+
+.icon-picker__search input {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 4%);
+  padding: 0.7rem 0.8rem;
+}
+
+.icon-picker__search input:focus {
+  border-color: var(--color-red-bright);
+  outline: none;
+}
+
+.icon-picker__results,
+.icon-picker__pagination {
+  color: var(--color-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+}
+
+.icon-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.35rem;
+  overflow: auto;
+  max-height: min(24rem, 52svh);
+  padding-right: 0.2rem;
+}
+
+.icon-picker__option {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 3%);
+  color: #b8b8be;
+}
+
+.icon-picker__option svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.icon-picker__option:hover,
+.icon-picker__option:focus-visible,
+.icon-picker__option[aria-selected='true'] {
+  border-color: var(--color-red-bright);
+  background: rgb(226 35 26 / 14%);
+  color: white;
+}
+
+.icon-picker__empty {
+  margin: 0;
+  border: 1px dashed var(--color-line);
+  padding: 2rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.icon-picker__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}
+
+.icon-picker__pagination button {
+  border: 1px solid var(--color-line);
+  background: transparent;
+  padding: 0.45rem 0.65rem;
+}
+
+.catalog-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.catalog-list__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px solid var(--color-line);
+  padding: 0.8rem;
+}
+
+.catalog-list__icon {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: rgb(226 35 26 / 10%);
+  color: var(--color-red-bright);
+}
+
+.catalog-list__copy h3 {
+  overflow: hidden;
+  margin: 0;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalog-list__copy span {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.catalog-list__offer {
+  color: var(--color-red-bright);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+}
+
+.catalog-list__remove {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--color-line);
+  background: transparent;
+}
+
+.icon-picker .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+  .catalog-editor,
+  .catalog-list {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-editor__submit {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .icon-picker__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .icon-picker__results {
+    display: none;
+  }
+}

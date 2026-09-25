@@ -1,0 +1,78 @@
+.request-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.request-card {
+  border: 1px solid var(--color-line);
+  border-left: 2px solid var(--color-red);
+  padding: 1rem;
+}
+
+.request-card--done {
+  border-left-color: #49bb78;
+  opacity: 0.55;
+}
+
+.request-card__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--color-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+}
+
+.request-card__title {
+  margin: 0.8rem 0 0.2rem;
+}
+
+.request-card__phone {
+  color: var(--color-red-bright);
+}
+
+.request-card__parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.request-card__parts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--color-line);
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.request-card__parts .part-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.request-card__details {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.request-card__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.request-card__actions button {
+  border: 1px solid var(--color-line);
+  background: transparent;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 800px) {
+  .request-list {
+    grid-template-columns: 1fr;
+  }
+}

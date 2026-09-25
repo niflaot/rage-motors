@@ -1,0 +1,65 @@
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), sans-serif;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-red-bright);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  width: 3rem;
+  height: 1px;
+  background: currentColor;
+  content: '';
+}
+
+.section-title {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.35fr) 1fr;
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.section-title > span {
+  color: var(--color-red-bright);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-title h2 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 5.2rem);
+}
+
+.section-title--compact {
+  grid-template-columns: 2rem 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.section-title--compact h2 {
+  font-size: clamp(1.35rem, 2vw, 2rem);
+}

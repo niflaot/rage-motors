@@ -1,0 +1,12 @@
+:root {
+  --color-background: #09090b;
+  --color-surface: #101014;
+  --color-surface-raised: #17171c;
+  --color-foreground: #f4f4f5;
+  --color-muted: #9b9ba2;
+  --color-line: rgb(255 255 255 / 10%);
+  --color-red: #e2231a;
+  --color-red-bright: #ff4035;
+  --content-width: 1240px;
+  --header-height: 108px;
+}

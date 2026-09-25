@@ -1,0 +1,22 @@
+/* 7–1 entry point: vendors, abstracts, base, layout, components, pages, themes. */
+@import '../styles/vendors/tailwind.css';
+@import '../styles/abstracts/tokens.css';
+@import '../styles/base/reset.css';
+@import '../styles/base/typography.css';
+@import '../styles/layout/shell.css';
+@import '../styles/layout/header.css';
+@import '../styles/layout/header-user.css';
+@import '../styles/layout/footer.css';
+@import '../styles/components/buttons.css';
+@import '../styles/components/forms.css';
+@import '../styles/components/part-icon.css';
+@import '../styles/pages/home-hero.css';
+@import '../styles/pages/home-services.css';
+@import '../styles/pages/home.css';
+@import '../styles/pages/location.css';
+@import '../styles/pages/pricing.css';
+@import '../styles/pages/contact.css';
+@import '../styles/pages/panel.css';
+@import '../styles/pages/panel-catalog.css';
+@import '../styles/pages/panel-requests.css';
+@import '../styles/themes/rage.css';

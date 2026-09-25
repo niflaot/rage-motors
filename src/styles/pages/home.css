@@ -1,0 +1,44 @@
+.tow-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: var(--color-red);
+  padding: clamp(3rem, 6vw, 6rem)
+    max(1.5rem, calc((100% - var(--content-width)) / 2));
+}
+.tow-banner h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(3rem, 6vw, 6rem);
+}
+.tow-banner p {
+  margin: 0;
+}
+.tow-banner .eyebrow {
+  color: #280200;
+}
+.tow-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2vw, 2rem);
+}
+.tow-banner__phone {
+  color: #09090b;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 7rem);
+  font-weight: 900;
+  transition: opacity 160ms ease;
+}
+
+.tow-banner__phone:hover,
+.tow-banner__phone:focus-visible {
+  opacity: 0.7;
+}
+
+@media (max-width: 760px) {
+  .tow-banner,
+  .tow-banner__actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,105 @@
+# Rage Motors
+
+Responsive Rage Motors site built with Next.js App Router, strict TypeScript,
+Tailwind CSS, React Compiler, `next-intl`, Zod, and Better Auth. Persistent data
+lives in the sibling `rage-motors-api` service backed by Prisma and PostgreSQL.
+
+## Requirements
+
+- Node.js 20.9 or newer
+- npm 10 or newer
+
+## Start locally
+
+```bash
+npm install
+npm run dev
+```
+
+`npm run dev` starts the API on port 3001 and the frontend on port 3000. Open
+[http://localhost:3000](http://localhost:3000).
+
+## Discord authentication
+
+The staff route at `/panel` uses Better Auth with Discord and a seven-day,
+encrypted stateless session cookie. Copy `.env.example` to `.env.local`, then
+provide:
+
+- `BETTER_AUTH_SECRET` (at least 32 high-entropy characters)
+- `BETTER_AUTH_URL` (for local development: `http://localhost:3000`)
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
+- `DATABASE_URL`
+- `AUTHORIZED_DISCORD_IDS` (Discord user IDs separated by commas)
+
+In the Discord Developer Portal, register this OAuth2 redirect URL:
+
+```text
+http://localhost:3000/api/auth/callback/discord
+```
+
+Use the equivalent HTTPS URL for production. Without those variables the panel
+shows a configuration notice and keeps the login button disabled, while the
+rest of the site remains available.
+
+## Persistent request workflow
+
+The contact form and the small staff catalog use shared Zod contracts and
+persist their data in PostgreSQL through the sibling API. Browser storage is not
+used for catalog items, offers, or requests. Once authenticated and authorized,
+requests appear in `/panel`, where staff can complete or remove them.
+
+Apply schema changes from the API directory:
+
+```bash
+cd ../rage-motors-api
+npm run prisma:generate
+npm run prisma:migrate -- --name nombre_del_cambio
+```
+
+## Commands
+
+| Command             | Purpose                                    |
+| ------------------- | ------------------------------------------ |
+| `npm run dev`       | Start the local Next.js server             |
+| `npm run build`     | Create a production build                  |
+| `npm run start`     | Run the production build                   |
+| `npm run lint`      | Run ESLint with no warnings allowed        |
+| `npm run format`    | Format the repository                      |
+| `npm run typecheck` | Check strict TypeScript types              |
+| `npm run test`      | Run the Vitest suite once                  |
+| `npm run verify`    | Run every required quality check and build |
+
+## Project structure
+
+```text
+messages/                    Translation catalogs
+src/app/                     Thin Next.js route and layout shims
+src/components/              Reusable UI components
+src/features/                Reusable product behavior
+src/i18n/                    Locale configuration and request resolution
+src/layout/                  Shared shells and provider composition
+src/view/                    Domain-facing route bodies
+src/test/                    Shared test setup
+```
+
+## Internationalization without locale routes
+
+URLs remain stable (`/`, `/precios`, and so on) and never include `/en` or
+`/es`. The request configuration reads the `locale` cookie, validates it against
+the supported locale list, and falls back to Spanish. The included language
+switcher updates that cookie with a Server Action.
+
+To add a language:
+
+1. Add its locale identifier in `src/i18n/locales.ts`.
+2. Add a matching `messages/{locale}.json` catalog.
+3. Add its translated label to every existing catalog.
+
+## Coding conventions
+
+Source and configuration files use single quotes and no semicolons. Prettier
+enforces these rules. All application declarations use TSDoc, route files stay
+thin, user-facing copy comes from translation catalogs, and component tests live
+beside the components they cover. See `AGENTS.md` for the complete repository
+rules.

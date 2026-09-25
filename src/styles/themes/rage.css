@@ -1,0 +1,22 @@
+body {
+  background:
+    radial-gradient(
+      70rem 32rem at 78% -10%,
+      rgb(226 35 26 / 16%),
+      transparent 64%
+    ),
+    var(--color-background);
+}
+
+@keyframes pulse {
+  70% {
+    box-shadow: 0 0 0 0.5rem rgb(226 35 26 / 0%);
+  }
+}
+
+@keyframes reveal-copy {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}

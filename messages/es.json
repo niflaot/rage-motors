@@ -1,0 +1,249 @@
+{
+  "Metadata": {
+    "title": "Rage Motors · Taller mecánico en Idlewood",
+    "description": "Mecánica, potencia, pintura, seguridad y grúa 24/7 en Los Santos."
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "location": "Ubicación",
+    "pricing": "Precios",
+    "contact": "Contacto",
+    "primaryLabel": "Navegación principal",
+    "mobileLabel": "Navegación móvil",
+    "openMenu": "Abrir navegación",
+    "closeMenu": "Cerrar navegación",
+    "skip": "Saltar al contenido",
+    "workshopPhone": "Llamar al taller al 1424",
+    "accountLabel": "Cuenta del equipo",
+    "accountRole": "Staff",
+    "openPanel": "Abrir el panel de {name}",
+    "logout": "Cerrar sesión"
+  },
+  "Home": {
+    "slides": {
+      "workshop": {
+        "eyebrow": "Los Santos · Idlewood",
+        "title": "No lo dejes de fábrica.",
+        "description": "Mecánica, potencia, pintura y modificaciones. Dale a tu vehículo el aspecto y el rendimiento que buscas.",
+        "action": "Ver servicios",
+        "imageLabel": "Vehículo modificado en Rage Motors"
+      },
+      "performance": {
+        "eyebrow": "Mejoras de rendimiento",
+        "title": "Potencia que se siente",
+        "description": "Óxido nitroso, escape, suspensión y frenos que aguantan lo que el motor entrega. Tres niveles, instalados y probados el mismo día.",
+        "action": "Ver mejoras",
+        "imageLabel": "Motor preparado para competición"
+      },
+      "team": {
+        "eyebrow": "Rage Motors · Nuestro equipo",
+        "title": "Hoy tenemos trabajo.",
+        "description": "Y siempre hay sitio para alguien que sepa de mecánica. Conoce al equipo y encuentra tu lugar en Rage.",
+        "action": "Visítanos con tu CV",
+        "imageLabel": "Equipo del taller Rage Motors"
+      }
+    },
+    "previousSlide": "Historia anterior",
+    "nextSlide": "Historia siguiente",
+    "selectSlide": "Mostrar historia {number}",
+    "servicesEyebrow": "01 / servicios",
+    "servicesTitle": "Lo que hacemos en el taller",
+    "servicesHint": "Selecciona un servicio",
+    "bookService": "Ver tarifas del servicio",
+    "services": {
+      "mechanics": {
+        "title": "Mecánica general",
+        "tag": "Principal",
+        "description": "Motores, transmisión, frenos, neumáticos y carrocería. Revisamos el vehículo completo y lo dejamos andando el mismo día.",
+        "price": "desde $700",
+        "chipA": "Diagnóstico gratis",
+        "chipB": "Carros · motos · camiones"
+      },
+      "performance": {
+        "title": "Rendimiento",
+        "tag": "Potencia",
+        "description": "NOS, suspensión y ajustes que se instalan y prueban antes de que el carro vuelva a la calle.",
+        "price": "desde $5.000",
+        "chipA": "3 niveles",
+        "chipB": "Prueba incluida"
+      },
+      "paint": {
+        "title": "Pintura",
+        "tag": "Acabado",
+        "description": "Color completo, reparación de carrocería y un acabado limpio que borra el rastro del golpe.",
+        "price": "desde $800",
+        "chipA": "Color completo",
+        "chipB": "Carrocería"
+      },
+      "security": {
+        "title": "Seguridad",
+        "tag": "Protección",
+        "description": "GPS, ignición y cerraduras por niveles para que tu vehículo siga siendo tuyo.",
+        "price": "desde $5.000",
+        "chipA": "GPS",
+        "chipB": "Ignición"
+      },
+      "tow": {
+        "title": "Grúa 24/7",
+        "tag": "Rescate",
+        "description": "Llegamos a cualquier punto de San Andreas. Dentro o fuera de Los Santos, a cualquier hora.",
+        "price": "desde $1.500",
+        "chipA": "Toda San Andreas",
+        "chipB": "Siempre en turno"
+      }
+    },
+    "towEyebrow": "Asistencia en carretera · 24/7",
+    "towTitle": "Tu carro se detuvo. Nosotros no.",
+    "towDescription": "Comparte tu ubicación y la grúa sale de inmediato, estés donde estés en San Andreas."
+  },
+  "Location": {
+    "eyebrow": "Cómo llegar",
+    "title": "Idlewood, Los Santos",
+    "mapLabel": "Mapa de Idlewood con Rage Motors señalado",
+    "addressLabel": "Dirección",
+    "address": "Idlewood, junto a la gasolinería. Los Santos, San Andreas.",
+    "referencesLabel": "Referencias",
+    "references": "Baja de Grove Street hacia el sur; el taller queda a la derecha de la bomba de gasolina, portón gris con el letrero Service · Repair · Modify.",
+    "scheduleLabel": "Horario",
+    "schedule": "24/7 · siempre en turno",
+    "towLabel": "Grúa",
+    "towPrice": "$1.500 en LS · $2.500 fuera"
+  },
+  "Pricing": {
+    "eyebrow": "Tarifas sobre la mesa",
+    "title": "Lo que cuesta correr en serio",
+    "description": "Precios claros, sin letra chica. Te pasamos el total antes de levantar el capó.",
+    "popularLabel": "Lo más pedido",
+    "popularValue": "$700",
+    "popularDescription": "Cambio de aceite · 15 minutos",
+    "powerLabel": "Para volar",
+    "powerValue": "$10.000",
+    "powerDescription": "NOS nivel 1 · el primer empujón",
+    "towLabel": "Si te quedaste",
+    "towValue": "$1.500",
+    "towDescription": "Grúa dentro de Los Santos",
+    "workshopTitle": "Trabajo de taller",
+    "levelsTitle": "Potencia y seguridad por niveles",
+    "levelsDescription": "Sube de nivel cuando el carro te lo pida. Cada escalón se instala y prueba el mismo día.",
+    "services": {
+      "repairs": {
+        "name": "Reparaciones generales",
+        "detail": "Motor, frenos, transmisión y lo que la calle haya roto",
+        "price": "$800"
+      },
+      "paint": {
+        "name": "Repintado completo",
+        "detail": "Color nuevo de punta a punta",
+        "price": "$800"
+      },
+      "oil": {
+        "name": "Cambio de aceite",
+        "detail": "Entras, te sirves un café, sales",
+        "price": "$700"
+      },
+      "tint": {
+        "name": "Polarizado de ventanas",
+        "detail": "Que nadie sepa quién va al volante",
+        "price": "$10.000"
+      }
+    },
+    "categories": {
+      "nos": "Óxido nitroso",
+      "gps": "GPS rastreador",
+      "ignition": "Ignición",
+      "locks": "Cerraduras"
+    },
+    "level": "Nivel {number}",
+    "posterAlt": "Cartel completo de precios de Rage Motors"
+  },
+  "Contact": {
+    "eyebrow": "Compra de repuestos",
+    "title": "Véndenos tus piezas",
+    "description": "Elige las piezas disponibles, indica cuántas traes y envía la oferta al taller.",
+    "partsLabel": "Piezas que vas a vender",
+    "catalogEmpty": "El taller aún no ha configurado piezas disponibles.",
+    "catalogLoading": "Cargando piezas disponibles…",
+    "addPart": "Añadir",
+    "removePart": "Quitar una unidad de",
+    "selectPart": "Seleccionar",
+    "nameLabel": "Nombre",
+    "nameHint": "opcional",
+    "namePlaceholder": "Ej. Tommy Vercetti",
+    "phoneLabel": "Teléfono",
+    "phonePlaceholder": "555-0000",
+    "detailsLabel": "Detalles",
+    "detailsPlaceholder": "Estado de las piezas y cuándo puedes entregarlas.",
+    "submit": "Enviar oferta",
+    "submitting": "Enviando…",
+    "estimatedSubtotal": "Subtotal estimado",
+    "selectedParts": "{count, plural, =0 {Sin piezas seleccionadas} =1 {1 pieza seleccionada} other {# piezas seleccionadas}}",
+    "success": "Oferta recibida. El equipo ya puede revisarla.",
+    "serviceError": "No pudimos conectar con el taller. Inténtalo de nuevo.",
+    "errors": {
+      "phone": "Escribe un teléfono válido.",
+      "details": "Cuéntanos un poco más (mínimo 10 caracteres).",
+      "parts": "Selecciona al menos una pieza."
+    }
+  },
+  "Panel": {
+    "eyebrow": "Solo staff",
+    "title": "Panel del taller",
+    "description": "Solicitudes y catálogo central del equipo.",
+    "loginTitle": "Identifícate con Discord",
+    "loginDescription": "La sesión se mantiene cifrada durante siete días en este navegador.",
+    "loginAction": "Entrar con Discord",
+    "loginPending": "Abriendo Discord…",
+    "configurationTitle": "Falta conectar Discord",
+    "configurationBody": "Añade las variables del archivo .env.example y registra la URL de callback para habilitar el acceso real.",
+    "accessDeniedTitle": "Esta cuenta no tiene acceso",
+    "accessDeniedBody": "Añade tu ID de Discord a AUTHORIZED_DISCORD_IDS y reinicia el servidor.",
+    "tabsLabel": "Secciones del panel",
+    "requestsTab": "Ofertas de piezas",
+    "catalogTab": "Catálogo de compra",
+    "requestsTitle": "Ofertas de piezas",
+    "requestsEmpty": "Todavía no hay ofertas de piezas.",
+    "partsRequest": "Venta de piezas",
+    "pending": "Pendiente",
+    "done": "Atendida",
+    "markDone": "Marcar como atendida",
+    "markPending": "Reabrir solicitud",
+    "remove": "Eliminar solicitud",
+    "catalogTitle": "Catálogo de compra",
+    "catalogDescription": "Configura hasta ocho piezas. La oferta pública será el 50 % del precio de venta.",
+    "partIcon": "Icono",
+    "iconPickerDialog": "Selector de iconos Lucide",
+    "iconSearch": "Buscar icono",
+    "iconSearchPlaceholder": "Buscar entre todos los iconos…",
+    "iconResults": "{count, plural, =1 {1 resultado} other {# resultados}}",
+    "iconEmpty": "No hay iconos con ese nombre.",
+    "iconOptions": "Iconos disponibles",
+    "chooseIcon": "Elegir {name}",
+    "previousPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageCount": "Página {current} de {total}",
+    "partName": "Pieza",
+    "partNamePlaceholder": "Ej. Turbo etapa 2",
+    "partPrice": "Precio de venta",
+    "partPricePlaceholder": "10000",
+    "addPart": "Agregar pieza",
+    "catalogFull": "Catálogo completo",
+    "offer": "Oferta",
+    "catalogEmpty": "El catálogo está vacío.",
+    "loading": "Consultando PostgreSQL…",
+    "serviceError": "No se pudo guardar o consultar PostgreSQL. Revisa el servicio e inténtalo de nuevo.",
+    "errors": {
+      "partName": "Escribe al menos 2 caracteres.",
+      "partPrice": "Escribe un valor mayor a cero."
+    }
+  },
+  "Footer": {
+    "address": "Idlewood, Los Santos · San Andreas",
+    "workshop": "El taller",
+    "services": "Qué resolvemos",
+    "servicesBody": "Motores que no arrancan · carrocería doblada · potencia que falta · carros que no quieres perder",
+    "tow": "Grúa 24/7",
+    "towBody": "Donde estés, a la hora que sea.",
+    "legal": "Rage Motors · Idlewood · rol San Andreas",
+    "tagline": "Service · Repair · Modify"
+  }
+}
