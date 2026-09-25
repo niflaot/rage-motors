@@ -27,7 +27,14 @@ export const workshopRequestInputSchema = z.object({
     .max(24)
     .regex(/^[0-9+()\s-]+$/),
   details: z.string().trim().min(10).max(600),
-  parts: z.array(requestedPartInputSchema).min(1).max(40),
+  parts: z
+    .array(requestedPartInputSchema)
+    .min(1)
+    .max(40)
+    .refine(
+      (parts) =>
+        new Set(parts.map((part) => part.partId)).size === parts.length,
+    ),
 })
 
 /** Runtime contract for a request returned by the PostgreSQL service. */

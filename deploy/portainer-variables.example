@@ -3,7 +3,7 @@ RAGE_NODE_IMAGE=node:24-bookworm
 
 # Repositorio: acepta una rama, etiqueta o SHA completo.
 RAGE_REPOSITORY_URL=https://github.com/niflaot/rage-motors.git
-RAGE_GIT_REF=6e6f2de643d5a010c094a7e6fd6072556947ee8b
+RAGE_GIT_REF=main
 
 # PostgreSQL. Usa una contraseña segura que no contenga caracteres que deban
 # codificarse en una URL.

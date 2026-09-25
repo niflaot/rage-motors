@@ -31,4 +31,14 @@ describe('workshopRequestInputSchema', () => {
         .success,
     ).toBe(false)
   })
+
+  it('rejects duplicate part selections', () => {
+    const part = validRequest.parts[0]
+    expect(
+      workshopRequestInputSchema.safeParse({
+        ...validRequest,
+        parts: [part, { ...part, quantity: 3 }],
+      }).success,
+    ).toBe(false)
+  })
 })

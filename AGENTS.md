@@ -8,14 +8,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Rage Motors frontend rules
+# Rage Motors full-stack rules
 
-This repository contains only the Rage Motors frontend. Backend behavior belongs
-in the appropriate service and must be consumed through documented API contracts.
+This repository contains the Rage Motors Next.js application, including its
+same-origin Route Handlers, Better Auth integration, and Prisma persistence.
 
 ## Architecture
 
 - Keep `src/app/**/page.tsx` and `src/app/**/layout.tsx` as thin framework shims.
+- Keep `src/app/**/route.ts` as thin HTTP shims and put server behavior in
+  `src/features/*` or `src/lib/*`.
 - Put page bodies in `src/view/{domain}/{area}/NameView/NameView.tsx`.
 - Put shared provider and shell composition in `src/layout/*`.
 - Put reusable UI in `src/components/*` and reusable product logic in
@@ -65,4 +67,4 @@ in the appropriate service and must be consumed through documented API contracts
 - Do not overwrite user changes.
 - Do not commit generated output, dependency caches, local environment files,
   editor metadata, coverage, or `plan/`.
-- Run `npm run verify` before considering frontend work complete.
+- Run `npm run verify` before considering application work complete.

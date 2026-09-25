@@ -13,10 +13,10 @@ describe('catalogPartInputSchema', () => {
     expect(result.icon).toBe('cog')
   })
 
-  it('rejects an icon that Lucide does not provide', () => {
+  it('rejects a malformed icon identifier', () => {
     expect(
       catalogPartInputSchema.safeParse({
-        icon: 'icono-inexistente',
+        icon: 'Icono inexistente!',
         name: 'Bloque motor',
         salePrice: 8000,
       }).success,

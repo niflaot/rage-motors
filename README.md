@@ -2,7 +2,7 @@
 
 Responsive Rage Motors site built with Next.js App Router, strict TypeScript,
 Tailwind CSS, React Compiler, `next-intl`, Zod, and Better Auth. Persistent data
-lives in the sibling `rage-motors-api` service backed by Prisma and PostgreSQL.
+lives in PostgreSQL through same-origin Next.js Route Handlers and Prisma.
 
 ## Requirements
 
@@ -13,11 +13,11 @@ lives in the sibling `rage-motors-api` service backed by Prisma and PostgreSQL.
 
 ```bash
 npm install
+npm run prisma:deploy
 npm run dev
 ```
 
-`npm run dev` starts the API on port 3001 and the frontend on port 3000. Open
-[http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Discord authentication
 
@@ -38,21 +38,20 @@ In the Discord Developer Portal, register this OAuth2 redirect URL:
 http://localhost:3000/api/auth/callback/discord
 ```
 
-Use the equivalent HTTPS URL for production. Without those variables the panel
-shows a configuration notice and keeps the login button disabled, while the
-rest of the site remains available.
+Use the equivalent HTTPS URL for production. These private variables are
+required when compiling and starting the full-stack application.
 
 ## Persistent request workflow
 
 The contact form and the small staff catalog use shared Zod contracts and
-persist their data in PostgreSQL through the sibling API. Browser storage is not
-used for catalog items, offers, or requests. Once authenticated and authorized,
-requests appear in `/panel`, where staff can complete or remove them.
+persist their data directly in PostgreSQL through same-origin Route Handlers.
+Browser storage is not used for catalog items, offers, or requests. Once
+authenticated and authorized, requests appear in `/panel`, where staff can
+complete or remove them.
 
-Apply schema changes from the API directory:
+Apply schema changes from this repository:
 
 ```bash
-cd ../rage-motors-api
 npm run prisma:generate
 npm run prisma:migrate -- --name nombre_del_cambio
 ```
@@ -84,6 +83,7 @@ messages/                    Translation catalogs
 src/app/                     Thin Next.js route and layout shims
 src/components/              Reusable UI components
 src/features/                Reusable product behavior
+prisma/                      PostgreSQL schema and migrations
 src/i18n/                    Locale configuration and request resolution
 src/layout/                  Shared shells and provider composition
 src/view/                    Domain-facing route bodies

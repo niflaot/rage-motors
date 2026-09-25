@@ -3,7 +3,8 @@
 Este stack contiene únicamente la aplicación `mt-rage` y PostgreSQL. El propio
 contenedor de la aplicación descarga el repositorio, resuelve la referencia Git
 seleccionada a un commit exacto, instala también las dependencias necesarias para
-compilar Tailwind y Next.js, compila el proyecto y lo inicia.
+compilar Tailwind y Next.js, aplica las migraciones de Prisma, compila el proyecto
+y lo inicia.
 
 ## Servicios y persistencia
 
@@ -63,12 +64,13 @@ Para fijar exactamente una versión, copia el SHA completo en las variables del
 stack:
 
 ```text
-RAGE_GIT_REF=6e6f2de643d5a010c094a7e6fd6072556947ee8b
+RAGE_GIT_REF=main
 ```
 
-Después pulsa **Update the stack** en Portainer. También puedes usar una rama o
-etiqueta. Los logs de `mt-rage` muestran el SHA final que se compiló, y el
-despliegue falla claramente si la referencia no existe.
+Después de publicar los cambios en GitHub, pulsa **Update the stack** en
+Portainer. Para fijar una versión inmutable, reemplaza `main` por el SHA del
+commit publicado. Los logs de `mt-rage` muestran el SHA final que se compiló, y
+el despliegue falla claramente si la referencia no existe.
 
 ## Requisitos de Portainer
 
@@ -77,10 +79,7 @@ despliegue falla claramente si la referencia no existe.
 3. Pega `portainer-stack.yml` en el editor del stack y carga las variables de
    `portainer-variables.example` en **Environment variables**.
 
-## Alcance actual del repositorio
+## Aplicación integrada
 
-Este repositorio está definido como frontend y actualmente delega el catálogo,
-las solicitudes y el inicio de sesión a un servicio HTTP externo. Este stack
-crea PostgreSQL y entrega su conexión a la aplicación, pero esas funciones no
-usarán la base de datos directamente hasta que exista el contrato de backend
-correspondiente. No se incluye ni se despliega ningún servicio `rage-api`.
+El mismo proceso `mt-rage` sirve las páginas y las rutas `/api/*` en el puerto 3000. Better Auth, el catálogo y las solicitudes usan directamente el PostgreSQL
+interno mediante Prisma. No existe un puerto 3001 ni se necesita `RAGE_API_URL`.

@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { iconNames } from 'lucide-react/dynamic'
 import type { IconName } from 'lucide-react/dynamic'
 
 /** Legacy identifiers migrated from the original ten-icon catalog. */
@@ -16,9 +15,6 @@ const legacyCatalogIcons = {
   transmision: 'git-branch',
 } as const satisfies Readonly<Record<string, IconName>>
 
-/** Fast lookup used by Zod to reject unknown dynamic icon names. */
-const catalogIconNames: ReadonlySet<string> = new Set(iconNames)
-
 /** Converts an old icon identifier into its Lucide equivalent. */
 const normalizeCatalogIcon = (value: unknown): unknown =>
   typeof value === 'string' && value in legacyCatalogIcons
@@ -28,9 +24,13 @@ const normalizeCatalogIcon = (value: unknown): unknown =>
 /** Any valid icon name exported by the installed Lucide package. */
 export const catalogIconSchema = z.preprocess(
   normalizeCatalogIcon,
-  z.custom<IconName>(
-    (value) => typeof value === 'string' && catalogIconNames.has(value),
-  ),
+  z
+    .string()
+    .trim()
+    .min(1)
+    .max(80)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .transform((value) => value as IconName),
 )
 
 /** Shared validation contract for staff-created catalog parts. */
