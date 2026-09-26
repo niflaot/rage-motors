@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { auth, type AuthSession } from '@/lib/auth/auth'
-import { authorizedDiscordIds } from '@/lib/config/server-environment'
+import { authorizedDiscordIds } from '@/lib/auth/authorized-discord-ids'
 import { prisma } from '@/lib/database/prisma'
 
 /** Successful staff authorization with its validated Better Auth session. */

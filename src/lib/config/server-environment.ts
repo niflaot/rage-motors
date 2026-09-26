@@ -4,7 +4,6 @@ import { z } from 'zod'
 
 /** Validates private runtime values required by authentication and persistence. */
 const serverEnvironmentSchema = z.object({
-  AUTHORIZED_DISCORD_IDS: z.string().default(''),
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.url(),
   DATABASE_URL: z.string().min(1),
@@ -14,10 +13,3 @@ const serverEnvironmentSchema = z.object({
 
 /** Validated private configuration available only to server modules. */
 export const serverEnvironment = serverEnvironmentSchema.parse(process.env)
-
-/** Discord account identifiers allowed to access staff operations. */
-export const authorizedDiscordIds: ReadonlySet<string> = new Set(
-  serverEnvironment.AUTHORIZED_DISCORD_IDS.split(',')
-    .map((identifier) => identifier.trim())
-    .filter(Boolean),
-)

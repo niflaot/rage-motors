@@ -28,7 +28,6 @@ mínimo estas variables:
 | `BETTER_AUTH_URL`        | URL HTTPS pública del sitio, sin barra final.      |
 | `DISCORD_CLIENT_ID`      | Client ID de la aplicación de Discord.             |
 | `DISCORD_CLIENT_SECRET`  | Client secret de la aplicación de Discord.         |
-| `AUTHORIZED_DISCORD_IDS` | IDs autorizados de Discord separados por comas.    |
 
 Estas variables ya tienen valores predeterminados y puedes modificarlas cuando
 lo necesites:
@@ -52,6 +51,8 @@ openssl rand -base64 32
 
 Todas estas variables se cargan juntas en **Environment variables** del stack y
 Portainer las inyecta en `mt-rage`. No subas sus valores reales al repositorio.
+Los Discord IDs autorizados están definidos en la allowlist del servidor y no
+requieren una variable de Portainer.
 En el portal de Discord registra, sustituyendo el dominio, esta redirección:
 
 ```text

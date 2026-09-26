@@ -196,7 +196,7 @@
     "configurationTitle": "Falta conectar Discord",
     "configurationBody": "Añade las variables del archivo .env.example y registra la URL de callback para habilitar el acceso real.",
     "accessDeniedTitle": "Esta cuenta no tiene acceso",
-    "accessDeniedBody": "Añade tu ID de Discord a AUTHORIZED_DISCORD_IDS y reinicia el servidor.",
+    "accessDeniedBody": "Tu cuenta de Discord no forma parte del equipo autorizado.",
     "tabsLabel": "Secciones del panel",
     "requestsTab": "Ofertas de piezas",
     "catalogTab": "Catálogo de compra",

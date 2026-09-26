@@ -30,7 +30,9 @@ provide:
 - `DISCORD_CLIENT_ID`
 - `DISCORD_CLIENT_SECRET`
 - `DATABASE_URL`
-- `AUTHORIZED_DISCORD_IDS` (Discord user IDs separated by commas)
+
+The Discord staff allowlist is defined in
+`src/lib/auth/authorized-discord-ids.ts`.
 
 In the Discord Developer Portal, register this OAuth2 redirect URL:
 
