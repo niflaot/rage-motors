@@ -33,13 +33,19 @@
   grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
   align-items: start;
   gap: clamp(1rem, 2vw, 2rem);
+  height: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .parts-form__catalog {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
   min-width: 0;
   min-height: 0;
+  height: 100%;
   margin: 0;
+  overflow: hidden;
   border: 1px solid var(--color-line);
   background: rgb(255 255 255 / 1%);
   padding: clamp(0.65rem, 1.2vh, 0.9rem);
@@ -57,7 +63,34 @@
 .parts-picker__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
   gap: 0.4rem;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.45rem;
+  scrollbar-color: var(--color-red-bright) rgb(255 255 255 / 5%);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.parts-picker__grid::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.parts-picker__grid::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgb(255 255 255 / 5%);
+}
+
+.parts-picker__grid::-webkit-scrollbar-thumb {
+  border: 2px solid #0b0b0e;
+  border-radius: 999px;
+  background: var(--color-red-bright);
+}
+
+.parts-picker__grid::-webkit-scrollbar-thumb:hover {
+  background: #ff514a;
 }
 
 .parts-picker__item {
@@ -245,6 +278,22 @@
 
   .parts-picker__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .parts-form {
+    height: auto;
+    overflow: visible;
+  }
+
+  .parts-form__catalog {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .parts-picker__grid {
+    overflow: visible;
+    padding-right: 0;
   }
 }
 
