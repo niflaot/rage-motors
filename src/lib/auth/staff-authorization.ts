@@ -18,6 +18,8 @@ interface RejectedStaff {
   readonly authorized: false
   /** Stable machine-readable error code. */
   readonly code: 'DISCORD_ACCOUNT_NOT_AUTHORIZED' | 'UNAUTHENTICATED'
+  /** Discord account ID detected for the signed-in user, when available. */
+  readonly discordAccountId: string | null
   /** HTTP status matching the authorization failure. */
   readonly status: 401 | 403
 }
@@ -31,22 +33,30 @@ export const authorizeStaff = async (
 ): Promise<StaffAuthorizationResult> => {
   const session = await auth.api.getSession({ headers: requestHeaders })
   if (!session) {
-    return { authorized: false, code: 'UNAUTHENTICATED', status: 401 }
+    return {
+      authorized: false,
+      code: 'UNAUTHENTICATED',
+      discordAccountId: null,
+      status: 401,
+    }
   }
 
   const discordAccount = await prisma.account.findFirst({
     select: { accountId: true },
     where: {
-      accountId: { in: [...authorizedDiscordIds] },
       providerId: 'discord',
       userId: session.user.id,
     },
   })
 
-  if (!discordAccount) {
+  if (
+    !discordAccount ||
+    !authorizedDiscordIds.has(discordAccount.accountId.trim())
+  ) {
     return {
       authorized: false,
       code: 'DISCORD_ACCOUNT_NOT_AUTHORIZED',
+      discordAccountId: discordAccount?.accountId ?? null,
       status: 403,
     }
   }

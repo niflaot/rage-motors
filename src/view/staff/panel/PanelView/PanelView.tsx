@@ -11,6 +11,8 @@ interface PanelViewProperties {
   readonly accessDenied: boolean
   /** Whether the server has usable Discord OAuth credentials. */
   readonly authConfigured: boolean
+  /** Discord account ID detected when the allowlist rejected the session. */
+  readonly deniedDiscordId: string | null
   /** Server-validated Better Auth session, when available. */
   readonly session: AuthSession | null
 }
@@ -19,6 +21,7 @@ interface PanelViewProperties {
 const PanelView = ({
   accessDenied,
   authConfigured,
+  deniedDiscordId,
   session,
 }: PanelViewProperties): ReactNode => {
   const translate = useTranslations('Panel')
@@ -36,6 +39,7 @@ const PanelView = ({
         <DiscordLogin
           accessDenied={accessDenied}
           authConfigured={authConfigured}
+          deniedDiscordId={deniedDiscordId}
         />
       )}
     </main>

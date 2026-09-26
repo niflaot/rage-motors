@@ -12,12 +12,15 @@ interface DiscordLoginProperties {
   readonly accessDenied: boolean
   /** Whether all server-side Discord credentials are available. */
   readonly authConfigured: boolean
+  /** Discord account ID detected for the rejected authenticated account. */
+  readonly deniedDiscordId: string | null
 }
 
 /** Starts the Better Auth Discord OAuth flow or explains missing setup. */
 const DiscordLogin = ({
   accessDenied,
   authConfigured,
+  deniedDiscordId,
 }: DiscordLoginProperties): ReactNode => {
   const translate = useTranslations('Panel')
   const [pending, setPending] = useState(false)
@@ -52,6 +55,11 @@ const DiscordLogin = ({
         <div className='discord-login__notice' role='alert'>
           <strong>{translate('accessDeniedTitle')}</strong>
           <p>{translate('accessDeniedBody')}</p>
+          {deniedDiscordId && (
+            <p className='discord-login__detected-id'>
+              {translate('detectedDiscordId', { id: deniedDiscordId })}
+            </p>
+          )}
         </div>
       )}
       <button

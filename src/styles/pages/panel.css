@@ -62,6 +62,14 @@
   font-size: 0.85rem;
 }
 
+.discord-login__notice .discord-login__detected-id {
+  margin-top: 0.55rem;
+  color: var(--color-text);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
 .panel-dashboard {
   display: grid;
   gap: 0;

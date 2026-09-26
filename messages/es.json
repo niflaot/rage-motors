@@ -197,6 +197,7 @@
     "configurationBody": "Añade las variables del archivo .env.example y registra la URL de callback para habilitar el acceso real.",
     "accessDeniedTitle": "Esta cuenta no tiene acceso",
     "accessDeniedBody": "Tu cuenta de Discord no forma parte del equipo autorizado.",
+    "detectedDiscordId": "ID detectado: {id}",
     "tabsLabel": "Secciones del panel",
     "requestsTab": "Ofertas de piezas",
     "catalogTab": "Catálogo de compra",

@@ -20,12 +20,13 @@ const PanelPage = async (): Promise<ReactNode> => {
   )
   const result = authConfigured
     ? await getStaffSession()
-    : { accessDenied: false, session: null }
+    : { accessDenied: false, deniedDiscordId: null, session: null }
 
   return (
     <PanelView
       accessDenied={result.accessDenied}
       authConfigured={authConfigured}
+      deniedDiscordId={result.deniedDiscordId}
       session={result.session}
     />
   )

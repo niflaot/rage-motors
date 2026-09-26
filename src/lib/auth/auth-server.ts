@@ -9,6 +9,8 @@ import { authorizeStaff } from '@/lib/auth/staff-authorization'
 export interface StaffSessionResult {
   /** Whether a signed-in Discord account was rejected by the allowlist. */
   readonly accessDenied: boolean
+  /** Discord account ID linked to a denied authenticated session. */
+  readonly deniedDiscordId: string | null
   /** Authorized session, when the account passed every server check. */
   readonly session: AuthSession | null
 }
@@ -20,14 +22,16 @@ export const getStaffSession = async (): Promise<StaffSessionResult> => {
     if (!result.authorized) {
       return {
         accessDenied: result.status === 403,
+        deniedDiscordId: result.discordAccountId,
         session: null,
       }
     }
     return {
       accessDenied: false,
+      deniedDiscordId: null,
       session: result.session,
     }
   } catch {
-    return { accessDenied: false, session: null }
+    return { accessDenied: false, deniedDiscordId: null, session: null }
   }
 }
