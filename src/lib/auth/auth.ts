@@ -32,6 +32,7 @@ export const auth = betterAuth({
     discord: {
       clientId: serverEnvironment.DISCORD_CLIENT_ID,
       clientSecret: serverEnvironment.DISCORD_CLIENT_SECRET,
+      prompt: 'consent',
     },
   },
   trustedOrigins: [serverEnvironment.BETTER_AUTH_URL],
