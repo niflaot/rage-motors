@@ -11,9 +11,6 @@ import {
   createInternalServerErrorResponse,
 } from '@/lib/http/api-response'
 
-/** Maximum number of pieces shown in the desktop catalog selector. */
-const maximumCatalogParts = 8
-
 /** Returns the public catalog ordered by creation time. */
 export const handleCatalogGet = async (): Promise<Response> => {
   try {
@@ -41,15 +38,8 @@ export const handleCatalogPost = async (
       return createApiErrorResponse('INVALID_CATALOG_PART', 422)
     }
 
-    const part = await prisma.$transaction(async (transaction) => {
-      const count = await transaction.catalogPart.count()
-      if (count >= maximumCatalogParts) return null
-      return transaction.catalogPart.create({ data: result.data })
-    })
-
-    return part
-      ? Response.json(part, { status: 201 })
-      : createApiErrorResponse('CATALOG_FULL', 409)
+    const part = await prisma.catalogPart.create({ data: result.data })
+    return Response.json(part, { status: 201 })
   } catch (error) {
     return createInternalServerErrorResponse(error)
   }

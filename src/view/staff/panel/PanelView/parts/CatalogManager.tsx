@@ -19,9 +19,6 @@ import {
   type CatalogPart,
 } from '@/features/catalog/catalog-contract'
 
-/** Maximum pieces shown in the no-scroll desktop selector. */
-const maximumCatalogParts = 8
-
 /** Local errors surfaced by the catalog form. */
 interface CatalogErrors {
   /** Validation message for a missing part name. */
@@ -66,7 +63,7 @@ const CatalogManager = (): ReactNode => {
   /** Validates and adds one part to the PostgreSQL buying catalog. */
   const addPart = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    if (catalog.length >= maximumCatalogParts || pending) return
+    if (pending) return
 
     const result = catalogPartInputSchema.safeParse({
       icon: partIcon,
@@ -118,9 +115,7 @@ const CatalogManager = (): ReactNode => {
           <h2>{translate('catalogTitle')}</h2>
           <p>{translate('catalogDescription')}</p>
         </div>
-        <span className='panel-section__count'>
-          {catalog.length}/{maximumCatalogParts}
-        </span>
+        <span className='panel-section__count'>{catalog.length}</span>
       </div>
       <form className='catalog-editor' noValidate onSubmit={addPart}>
         <CatalogIconPicker onChange={setPartIcon} value={partIcon} />
@@ -143,12 +138,10 @@ const CatalogManager = (): ReactNode => {
         />
         <button
           className='button button--primary catalog-editor__submit'
-          disabled={catalog.length >= maximumCatalogParts || pending}
+          disabled={pending}
           type='submit'
         >
-          {translate(
-            catalog.length >= maximumCatalogParts ? 'catalogFull' : 'addPart',
-          )}
+          {translate('addPart')}
         </button>
       </form>
       {serviceError && (
